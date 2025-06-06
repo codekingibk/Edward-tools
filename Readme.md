@@ -1,7 +1,7 @@
 # EDWARD SOLOS - Ultimate Hacking Toolkit
 
 ![EDWARD SOLOS ASCII Art](https://ik.imagekit.io/rmlbayysp/1749254010677-IMG-20250604-WA0000_---7cdiQG.jpg)  
-*(Screenshot of the ASCII art and menu would go here)*
+
 
 A powerful all-in-one hacking toolkit with utilities, games, and system tools wrapped in a stylish shell interface.
 
