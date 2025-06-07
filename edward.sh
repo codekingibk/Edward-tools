@@ -11,7 +11,7 @@ display_ascii() {
     echo "███████╗██████╔╝╚███╔███╔╝██║  ██║██║  ██║██████╔╝    ███████║╚██████╔╝███████╗╚██████╔╝███████║"
     echo "╚══════╝╚═════╝  ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝     ╚══════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝"
     echo -e "\e[0m"
-    echo "GitHub: https://github.com/codekingibk/Edward-tools/edward.sh"
+    echo "GitHub: https://github.com/codekingibk/Edward-tools"
     echo
 }
 
@@ -20,18 +20,19 @@ text_color='\e[1;35m'
 bg_color='\e[48;5;234m'
 reset='\e[0m'
 
-# Shell-based Space Invaders Game
-space_invaders() {
+# Snake Game
+snake_game() {
     clear
     display_ascii
-    echo -e "${text_color}${bg_color}~ SPACE INVADERS ~${reset}"
-    echo "Use A/D to move, SPACE to shoot, Q to quit"
+    echo -e "${text_color}${bg_color}~ SNAKE GAME ~${reset}"
+    echo "Use WASD to move, Q to quit"
     
     # Game variables
-    ship_pos=20
+    snake=("10,10" "10,11" "10,12")
+    direction="d"
+    food_row=$((RANDOM % 20 + 1))
+    food_col=$((RANDOM % 40 + 1))
     score=0
-    aliens=("5,10" "5,20" "5,30" "10,10" "10,20" "10,30")
-    bullets=()
     game_over=0
     
     while [[ $game_over -eq 0 ]]; do
@@ -46,36 +47,26 @@ space_invaders() {
         printf '+\n'
         
         # Draw game area
-        for (( y=1; y<=15; y++ )); do
+        for (( row=1; row<=20; row++ )); do
             printf '|'
-            for (( x=1; x<=40; x++ )); do
+            for (( col=1; col<=40; col++ )); do
                 cell_empty=1
                 
-                # Draw ship
-                if [[ $y -eq 15 && $x -eq $ship_pos ]]; then
-                    printf '^'
+                # Draw snake
+                for segment in "${snake[@]}"; do
+                    IFS=',' read s_row s_col <<< "$segment"
+                    if [[ $row -eq $s_row && $col -eq $s_col ]]; then
+                        printf 'O'
+                        cell_empty=0
+                        break
+                    fi
+                done
+                
+                # Draw food
+                if [[ $row -eq $food_row && $col -eq $food_col ]]; then
+                    printf '@'
                     cell_empty=0
                 fi
-                
-                # Draw bullets
-                for bullet in "${bullets[@]}"; do
-                    IFS=',' read by bx <<< "$bullet"
-                    if [[ $bx -eq $x && $by -eq $y ]]; then
-                        printf '|'
-                        cell_empty=0
-                        break
-                    fi
-                done
-                
-                # Draw aliens
-                for alien in "${aliens[@]}"; do
-                    IFS=',' read ay ax <<< "$alien"
-                    if [[ $ax -eq $x && $ay -eq $y ]]; then
-                        printf '👾'
-                        cell_empty=0
-                        break
-                    fi
-                done
                 
                 # Empty cell
                 if [[ $cell_empty -eq 1 ]]; then
@@ -93,64 +84,48 @@ space_invaders() {
         # Process input
         read -rsn1 -t 0.1 input
         case $input in
-            a) (( ship_pos > 1 )) && (( ship_pos-- ));;
-            d) (( ship_pos < 40 )) && (( ship_pos++ ));;
-            ' ') bullets+=("$((15-1)),$ship_pos");;
+            w) [[ "$direction" != "s" ]] && direction="w";;
+            a) [[ "$direction" != "d" ]] && direction="a";;
+            s) [[ "$direction" != "w" ]] && direction="s";;
+            d) [[ "$direction" != "a" ]] && direction="d";;
             q) game_over=1;;
         esac
         
-        # Move bullets
-        new_bullets=()
-        for bullet in "${bullets[@]}"; do
-            IFS=',' read by bx <<< "$bullet"
-            (( by-- ))
-            if (( by > 0 )); then
-                new_bullets+=("$by,$bx")
-                
-                # Check for alien hits
-                new_aliens=()
-                hit=0
-                for alien in "${aliens[@]}"; do
-                    IFS=',' read ay ax <<< "$alien"
-                    if [[ $ax -eq $bx && $ay -eq $by ]]; then
-                        (( score += 10 ))
-                        hit=1
-                    else
-                        new_aliens+=("$ay,$ax")
-                    fi
-                done
-                aliens=("${new_aliens[@]}")
-                [[ $hit -eq 1 ]] && continue
+        # Move snake
+        IFS=',' read head_row head_col <<< "${snake[-1]}"
+        case $direction in
+            w) ((head_row--));;
+            a) ((head_col--));;
+            s) ((head_row++));;
+            d) ((head_col++));;
+        esac
+        
+        # Check collisions
+        if [[ $head_row -lt 1 || $head_row -gt 20 || $head_col -lt 1 || $head_col -gt 40 ]]; then
+            echo -e "\033[31mGAME OVER! You hit the wall!\033[0m"
+            game_over=1
+            continue
+        fi
+        
+        for segment in "${snake[@]}"; do
+            IFS=',' read s_row s_col <<< "$segment"
+            if [[ $head_row -eq $s_row && $head_col -eq $s_col ]]; then
+                echo -e "\033[31mGAME OVER! You ate yourself!\033[0m"
+                game_over=1
+                continue 2
             fi
         done
-        bullets=("${new_bullets[@]}")
         
-        # Check win condition
-        if [[ ${#aliens[@]} -eq 0 ]]; then
-            echo -e "\033[32mYOU WIN! Final score: $score\033[0m"
-            game_over=1
+        # Check food
+        if [[ $head_row -eq $food_row && $head_col -eq $food_col ]]; then
+            ((score++))
+            food_row=$((RANDOM % 20 + 1))
+            food_col=$((RANDOM % 40 + 1))
+        else
+            snake=("${snake[@]:1}")
         fi
         
-        # Random alien movement
-        if (( RANDOM % 10 == 0 )); then
-            new_aliens=()
-            for alien in "${aliens[@]}"; do
-                IFS=',' read ay ax <<< "$alien"
-                move=$(( RANDOM % 3 - 1 )) # -1, 0, or 1
-                (( new_ax = ax + move ))
-                if (( new_ax >= 1 && new_ax <= 40 )); then
-                    ax=$new_ax
-                fi
-                (( ay++ ))
-                if (( ay >= 15 )); then
-                    echo -e "\033[31mGAME OVER! The aliens reached Earth!\033[0m"
-                    game_over=1
-                    break
-                fi
-                new_aliens+=("$ay,$ax")
-            done
-            aliens=("${new_aliens[@]}")
-        fi
+        snake+=("$head_row,$head_col")
     done
     
     read -p "Press enter to continue..."
@@ -212,7 +187,7 @@ main_menu() {
         echo "6) Install FaceBash"
         echo "7) Install DARKARMY"
         echo "8) Install Auto_Tor_IP_changer"
-        echo "9) Play Space Invaders"
+        echo "9) Play Snake Game"
         echo "10) Watch Star Wars (ASCII)"
         echo "11) System Dashboard"
         echo "0) Exit"
@@ -327,7 +302,7 @@ main_menu() {
                 cd ../..
                 ;;
             9)
-                space_invaders
+                snake_game
                 ;;
             10)
                 star_wars
