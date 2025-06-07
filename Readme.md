@@ -2,13 +2,12 @@
 
 ![EDWARD SOLOS ASCII Art](https://ik.imagekit.io/rmlbayysp/1749254010677-IMG-20250604-WA0000_---7cdiQG.jpg)  
 
-
 A powerful all-in-one hacking toolkit with utilities, games, and system tools wrapped in a stylish shell interface.
 
 ## Features
 
 - 🛠️ **Penetration Testing Tools**: 8+ pre-configured hacking tools
-- 🎮 **Interactive Games**: Space Invaders clone in your terminal
+- 🎮 **Interactive Games**: Snake game in your terminal
 - 🎥 **ASCII Movies**: Watch Star Wars in ASCII art
 - 📊 **System Dashboard**: Real-time monitoring
 - 🎨 **Custom UI**: Colorful interface with EDWARD SOLOS branding
@@ -80,7 +79,7 @@ chmod +x edward.sh
 | 6  | FaceBash             | Facebook brute-force tool            |
 | 7  | DARKARMY             | Another multi-tool framework         |
 | 8  | Auto_Tor_IP_changer  | Automate Tor IP rotation             |
-| 9  | Space Invaders       | Terminal-based action game           |
+| 9  | Snake Game           | Classic terminal game                |
 | 10 | Star Wars ASCII      | Watch Episode IV in terminal         |
 | 11 | System Dashboard     | Real-time system monitoring          |
 
@@ -90,15 +89,20 @@ chmod +x edward.sh
    - Use numbers to select menu items
    - Follow on-screen instructions for each tool
 
-2. **Game Controls** (Space Invaders):
+2. **Game Controls** (Snake):
+   - `W`: Move up
    - `A`: Move left
+   - `S`: Move down
    - `D`: Move right
-   - `SPACE`: Shoot
    - `Q`: Quit game
 
-3. **System Dashboard**:
-   - View real-time system stats
-   - Monitor processes and network
+3. **Quick Access**:
+   Create an alias for easy launching:
+   ```bash
+   echo "alias edward='~/Edward-tools/edward.sh'" >> ~/.bashrc
+   source ~/.bashrc
+   ```
+   Then just type `edward` to start!
 
 ## Troubleshooting
 
