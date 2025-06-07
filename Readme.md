@@ -30,7 +30,7 @@ pkg update && pkg upgrade -y
 pkg install git -y
 pkg install python -y
 git clone https://github.com/codekingibk/Edward-tools
-cd edward.sh
+cd Edward-tools
 chmod +x edward.sh
 ./edward.sh
 ```
@@ -41,7 +41,7 @@ chmod +x edward.sh
 sudo apt update && sudo apt upgrade -y
 sudo apt install git -y
 git clone https://github.com/codekingibk/Edward-tools
-cd edward.sh
+cd Edward-tools
 chmod +x edward.sh
 ./edward.sh
 ```
@@ -52,7 +52,7 @@ chmod +x edward.sh
 sudo apt update && sudo apt upgrade -y
 sudo apt install git python3 -y
 git clone https://github.com/codekingibk/Edward-tools
-cd edward.sh
+cd Edward-tools
 chmod +x edward.sh
 ./edward.sh
 ```
@@ -63,7 +63,7 @@ chmod +x edward.sh
 brew update
 brew install git python
 git clone https://github.com/codekingibk/Edward-tools
-cd edward.sh
+cd Edward-tools
 chmod +x edward.sh
 ./edward.sh
 ```
