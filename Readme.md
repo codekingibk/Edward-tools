@@ -29,7 +29,7 @@ A powerful all-in-one hacking toolkit with utilities, games, and system tools wr
 pkg update && pkg upgrade -y
 pkg install git -y
 pkg install python -y
-git clone https://github.com/codekingibk/edward.sh.git
+git clone https://github.com/codekingibk/Edward-tools
 cd edward.sh
 chmod +x edward.sh
 ./edward.sh
@@ -40,7 +40,7 @@ chmod +x edward.sh
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install git -y
-git clone https://github.com/codekingibk/edward.sh.git
+git clone https://github.com/codekingibk/Edward-tools
 cd edward.sh
 chmod +x edward.sh
 ./edward.sh
@@ -51,7 +51,7 @@ chmod +x edward.sh
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install git python3 -y
-git clone https://github.com/codekingibk/edward.sh.git
+git clone https://github.com/codekingibk/Edward-tools
 cd edward.sh
 chmod +x edward.sh
 ./edward.sh
@@ -62,7 +62,7 @@ chmod +x edward.sh
 ```bash
 brew update
 brew install git python
-git clone https://github.com/codekingibk/edward.sh.git
+git clone https://github.com/codekingibk/Edward-tools
 cd edward.sh
 chmod +x edward.sh
 ./edward.sh
